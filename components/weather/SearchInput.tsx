@@ -10,21 +10,30 @@ interface SearchInputProps {
 
 export default function SearchInput({ onSearch }: SearchInputProps) {
   const [city, setCity] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSearch = () => {
     if (city.trim()) {
+      setIsLoading(true);
       onSearch(city);
+      setCity("");
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex gap-2">
+    <div>
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        handleSearch();
+      }} className="flex gap-2">
       <Input
         placeholder="Enter city name"
         value={city}
         onChange={(e) => setCity(e.target.value)}
       />
-      <Button onClick={handleSearch}>Search</Button>
+      <Button disabled={isLoading}>{ isLoading ? "Searching..." : "Search"}</Button>
+      </form>
     </div>
   );
 }

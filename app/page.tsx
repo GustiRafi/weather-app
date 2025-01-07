@@ -1,12 +1,15 @@
 "use client";
 
 import { useState,useEffect } from "react";
-import SearchInput from "@/components/SearchInput";
-import WeatherCard from "@/components/WeatherCard";
+import SearchInput from "@/components/weather/SearchInput";
+import WeatherCard from "@/components/weather/WeatherCard";
+import { Weather } from "@/types/weather";
+// import { set } from "zod";
 
 export default function Home() {
-  const [weather, setWeather] = useState(null);
+  const [weather, setWeather] = useState<Weather | null>(null);
   const [error, setError] = useState("");
+  const [coords, setCoords] = useState({ lat: -6.2146, lon: 106.8451 });
 
   const fetchWeather = async (city: string) => {
     try {
@@ -14,19 +17,18 @@ export default function Home() {
         `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=29fbc40261d20fbcfc680502f238731f&units=metric`
       );
       if (!res.ok) {
-        console.error("Error:", data);
         throw new Error("City not found");
       }
 
       const data = await res.json();
-      setWeather({
-        city: data.name,
-        temperature: data.main.temp,
-        description: data.weather[0].description,
-        icon: data.weather[0].icon,
-      });
+      setCoords({ lat: data.coord.lat, lon: data.coord.lon });
+      setWeather(data);
     } catch (error) {
-      alert(error.message);
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert("An unknown error occurred");
+      }
     }
   };
 
@@ -42,14 +44,13 @@ export default function Home() {
         throw new Error(data.message || "Failed to fetch weather data");
       }
 
-      setWeather({
-        city: data.name,
-        temperature: data.main.temp,
-        description: data.weather[0].description,
-        icon: data.weather[0].icon,
-      });
+      setWeather(data);
     } catch (err) {
-      setError(err.message);
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred");
+      }
     }
   };
 
@@ -58,6 +59,7 @@ export default function Home() {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
+          setCoords({ lat: latitude, lon: longitude });
           fetchWeatherByCoords(latitude, longitude);
         },
         (err) => {
@@ -70,15 +72,18 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container p-4 max-w-6xl mx-auto space-y-6">
       <h1 className="text-3xl font-bold text-center mb-6">Weather App</h1>
       <SearchInput onSearch={fetchWeather} />
+      {/* <Map lat={coords.lat} lon={coords.lon} /> */}
       {weather && (
         <WeatherCard
-          city={weather.city}
-          temperature={weather.temperature}
-          description={weather.description}
-          icon={weather.icon}
+          city={weather.name}
+          coords={coords}
+          main={weather.main} 
+          wind={weather.wind} 
+          sys={weather.sys} 
+          weather={weather.weather[0]}
         />
       )}
     </div>
