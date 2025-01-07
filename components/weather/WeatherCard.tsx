@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Map from "@/components/weather/map";
 import { Button } from "@/components/ui/button";
 import { Coord, WeatherElement, Main, Wind, Sys } from "@/types/weather";
-import ForecastCard from "./ForecastCard";
+import ForecastCard from "@/components/weather/ForecastCard";
 
 interface WeatherData {
   city: string;

@@ -1,6 +1,5 @@
 'use client';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { get } from "http";
 import { useEffect, useState } from "react";
 export default function ForecastCard({coords}: {coords: {lat: number, lon: number}}) {
     const [forecast, setForecast] = useState([]);
