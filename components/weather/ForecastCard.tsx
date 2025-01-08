@@ -47,7 +47,7 @@ export default function ForecastCard({ coords }: ForecastCardProps) {
 useEffect(() => {
     getForecast()?.then((data) => {
         if (data && data.list) {
-            const filterData = data.list.reduce((acc: { [x: string]: any; }, item: { dt_txt: string; }) => {
+            const filterData = data.list.reduce((acc: Record<string, typeof data.list[0]>, item: { dt_txt: string; }) => {
                     const date = new Date(item.dt_txt).toLocaleDateString();
                     if (!acc[date] && date !== new Date().toLocaleDateString()) {
                         acc[date] = item;
