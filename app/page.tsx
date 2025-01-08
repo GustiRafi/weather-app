@@ -2,13 +2,13 @@
 
 import { useState,useEffect } from "react";
 import SearchInput from "@/components/weather/SearchInput";
-import WeatherCard from "@/components/weather/WeatherCard";
 import { Weather } from "@/types/weather";
+import WeatherWrapper from "@/components/weather/WeatherWrapper";
 // import { set } from "zod";
 
 export default function Home() {
   const [weather, setWeather] = useState<Weather | null>(null);
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
   const [coords, setCoords] = useState({ lat: -6.2146, lon: 106.8451 });
 
   const fetchWeather = async (city: string) => {
@@ -45,11 +45,13 @@ export default function Home() {
       }
 
       setWeather(data);
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(error.message);
+        // setError(error.message);
       } else {
-        setError("An unknown error occurred");
+        alert("An unknown error occurred");
+        // setError("An unknown error occurred");
       }
     }
   };
@@ -62,12 +64,12 @@ export default function Home() {
           setCoords({ lat: latitude, lon: longitude });
           fetchWeatherByCoords(latitude, longitude);
         },
-        (err) => {
-          setError("Location access denied. Please enable it to see weather data.");
+        (error) => {
+          alert(error.message);
         }
       );
     } else {
-      setError("Geolocation is not supported by your browser.");
+      alert("Geolocation is not supported by your browser.");
     }
   }, []);
 
@@ -77,7 +79,7 @@ export default function Home() {
       <SearchInput onSearch={fetchWeather} />
       {/* <Map lat={coords.lat} lon={coords.lon} /> */}
       {weather && (
-        <WeatherCard
+        <WeatherWrapper
           city={weather.name}
           coords={coords}
           main={weather.main} 

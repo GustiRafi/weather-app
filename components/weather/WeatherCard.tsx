@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Map from "@/components/weather/map";
-import { Button } from "@/components/ui/button";
 import { Coord, WeatherElement, Main, Wind, Sys } from "@/types/weather";
 import ForecastCard from "@/components/weather/ForecastCard";
-
+import Image from "next/image";
 interface WeatherData {
   city: string;
   coords: Coord;
@@ -15,7 +14,7 @@ interface WeatherData {
 }
 
 
-export default function WeatherCard({ city, coords, main, wind, sys,weather}: WeatherData) {
+export default function WeatherCard({ city, coords, main, wind,weather}: WeatherData) {
     const [favorites, setFavorites] = useState(false);
     const handleAddToFavorites = () => {
         if(favorites) {
@@ -41,9 +40,11 @@ export default function WeatherCard({ city, coords, main, wind, sys,weather}: We
             <Map weather={{description: weather.description, temp: main.temp}} coordinates={coords} city={city} />
           </div>
           <div>
-            <img
+            <Image
               src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
               alt={weather.description}
+              width={64}
+              height={64}
               className="w-16 h-16"
             />
             <div className="flex flex-col lg:flex-row lg:items-center gap-4">
@@ -67,7 +68,7 @@ export default function WeatherCard({ city, coords, main, wind, sys,weather}: We
             </div>
           </div>
         </div>
-        <Button variant="destructive" className="mt-4 w-full">See forecast</Button>
+        {/* <Button variant="destructive" className="mt-4 w-full">See forecast</Button> */}
       </CardContent>
     </Card>
   );

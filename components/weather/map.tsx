@@ -66,7 +66,7 @@ export default function Map({city,weather,coordinates, }: MapProps) {
         }
       };
     }
-  }, [coordinates, weather]);
+  }, [coordinates, weather, city]);
 
 
   return (
