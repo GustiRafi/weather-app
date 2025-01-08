@@ -44,18 +44,22 @@ export default function ForecastCard({ coords }: ForecastCardProps) {
     }
   };
 
-  useEffect(() => {
+useEffect(() => {
     getForecast()?.then((data) => {
-      if (data && data.list) {
-        const today = new Date().toISOString().split("T")[0];
-        const filteredData = data.list
-          .filter((item: ForecastData) => item.dt_txt.split(" ")[0] !== today)
-          .slice(0, 4);
+        if (data && data.list) {
+            const filterData = data.list.reduce((acc: { [x: string]: any; }, item: { dt_txt: string; }) => {
+                    const date = new Date(item.dt_txt).toLocaleDateString();
+                    if (!acc[date] && date !== new Date().toLocaleDateString()) {
+                        acc[date] = item;
+                    }
+                    return acc;
+            }, {} as Record<string, typeof data.list[0]>);
+            const filteredData = Object.values(filterData).slice(0, 4);
 
-        setForecast(filteredData);
-      }
+            setForecast(filteredData as ForecastData[]);
+        }
     });
-  }, [coords]);
+}, [coords]);
 
   if (error) {
     return (
