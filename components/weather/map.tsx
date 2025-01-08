@@ -70,7 +70,7 @@ export default function Map({city,weather,coordinates, }: MapProps) {
 
 
   return (
-    <div className="h-[400px] rounded-lg overflow-hidden">
+    <div className="h-[650px] rounded-lg overflow-hidden">
       <div id="map" className="h-full w-full" />
       <style jsx global>{`
         .custom-marker-icon {
