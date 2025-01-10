@@ -14,11 +14,17 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://weather.gusti.uno/'),
-  title: 'Weather - Cek Cuaca',
+  title: {
+    default: 'Weather - Cek Cuaca',
+    template: '%s - Weather - Cek Cuaca',
+  },
   description: 'Aplikasi cuaca modern dengan informasi cuaca real-time dan prakiraan 4 hari ke depan',
   keywords: 'cuaca, weather, prakiraan cuaca, weather forecast, Indonesia',
   openGraph: {
+    type: "website",
+    locale: "en_US",
     title: 'Weather  - Cek Cuaca ',
+    url: 'https://weather.gusti.uno/',
     description: 'Aplikasi cuaca dengan informasi cuaca real-time',
     images: ['/og-image.jpg'],
   },
@@ -27,6 +33,20 @@ export const metadata: Metadata = {
     title: 'Weather - Cek Cuaca',
     description: 'Aplikasi cuaca dengan informasi cuaca real-time',
     images: ['/og-image.jpg'],
+  },
+  creator: 'Rafi Gusti',
+  authors: [
+    {
+      name: 'Rafi Gusti',
+      url: 'https://gusti.uno/',
+    },
+  ],
+  robots: {
+    index: true,
+    follow: true,
+  },
+  icons: {
+    icon: '/favicon.ico',
   },
 };
 
